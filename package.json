@@ -1,0 +1,35 @@
+{
+  "name": "movies-explorer",
+  "version": "1.0.0",
+  "description": "Учебный проект онлайн-кинотеатра в рамках курса Веб-разработчик на платформе Яндекс Практикума",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --inspect app.js",
+    "dev": "nodemon --inspect app.js",
+    "lint": "npx eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sereja-artemov/movies-explorer-api.git"
+  },
+  "author": "Артемов Сергей",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sereja-artemov/movies-explorer-api/issues"
+  },
+  "homepage": "https://github.com/sereja-artemov/movies-explorer-api#readme",
+  "devDependencies": {
+    "eslint": "^8.23.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "celebrate": "^15.0.1",
+    "express": "^4.18.1",
+    "express-winston": "^4.2.0",
+    "mongoose": "^6.6.1",
+    "validator": "^13.7.0",
+    "winston": "^3.8.2"
+  }
+}
