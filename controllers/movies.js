@@ -3,6 +3,7 @@ const ValidationError = require('../error/ValidationError');
 const ConflictError = require('../error/ConflictError');
 const NotFoundError = require('../error/NotFoundError');
 const errCode = require("../const");
+const ForbiddenError = require("../error/ForbiddenError");
 
 const getUserMovies = (req, res, next) => {
   moviesModel.find({})
