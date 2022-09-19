@@ -4,6 +4,46 @@ const ConflictError = require('../error/ConflictError');
 const NotFound = require('../error/NotFoundError');
 const errCode = require("../const");
 
+const login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  return userModel.findUserByCredentials(email, password)
+    // eslint-disable-next-line consistent-return
+    .then((user) => {
+      // создаем токен
+      const { NODE_ENV, JWT_SECRET } = process.env;
+      const jwtToken = jsonwebtoken.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        { expiresIn: '7d' });
+      res.send({ token: jwtToken });
+    })
+    .catch(next);
+};
+
+const createUser = (req, res, next) => {
+  const {
+    name, email, password,
+  } = req.body;
+
+  bcrypt.hash(password, 10)
+    .then((hash) => userModel.create({
+      name, email, password: hash,
+    }))
+    .then((user) => res.send({
+      data: {
+        name: user.name,
+        email: user.email,
+      },
+    }))
+    .catch((err) => {
+      if (err.code === 11000) {
+        next(new ConflictError('Такой email уже существует'));
+      }
+      return next(err);
+    });
+};
+
 const getUser = (req, res, next) => {
   userModel.findById(req.params.userId)
     .then((user) => {
@@ -37,4 +77,4 @@ const updateUserInfo = (req, res, next) => {
     });
 }
 
-module.exports = { getUser, updateUserInfo };
+module.exports = { getUser, updateUserInfo, login, createUser };

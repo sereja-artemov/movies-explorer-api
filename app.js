@@ -4,6 +4,8 @@ const { errors } = require('celebrate');
 const {requestLogger, errorLogger} = require('./middlewares/logger');
 const usersRouter = require('./routes/users');
 const moviesRouter = require('./routes/movies');
+const {login, createUser} = require("./controllers/users");
+const auth = require('./middlewares/auth')
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -22,6 +24,11 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true,
 }));
+
+app.post('/signup', createUser);
+app.post('/signin', login);
+
+app.use(auth);
 
 app.use('/users', usersRouter);
 app.use('/movies', moviesRouter);
