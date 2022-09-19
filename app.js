@@ -1,11 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
-const {requestLogger, errorLogger} = require('./middlewares/logger');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const usersRouter = require('./routes/users');
 const moviesRouter = require('./routes/movies');
-const {login, createUser} = require("./controllers/users");
+const { login, createUser } = require("./controllers/users");
 const auth = require('./middlewares/auth')
+const { signupValidation, signinValidation } = require("./middlewares/validations");
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -25,13 +26,22 @@ app.use(express.urlencoded({
   extended: true,
 }));
 
-app.post('/signup', createUser);
-app.post('/signin', login);
+app.post('/signup', signupValidation, createUser);
+app.post('/signin', signinValidation, login);
 
 app.use(auth);
 
 app.use('/users', usersRouter);
 app.use('/movies', moviesRouter);
+app.use('*', (req, res) => {
+  try {
+    throw new NotFoundError('Страница не найдена');
+  } catch (err) {
+    if (err instanceof NotFoundError) {
+      res.status(errCode.NotFoundError).send({ message: err.message });
+    }
+  }
+});
 
 app.use(errorLogger);
 
