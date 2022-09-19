@@ -1,15 +1,35 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+const error = require('./middlewares/error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const usersRouter = require('./routes/users');
 const moviesRouter = require('./routes/movies');
-const { login, createUser } = require("./controllers/users");
+const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth')
-const { signupValidation, signinValidation } = require("./middlewares/validations");
+const { signupValidation, signinValidation } = require('./middlewares/validations');
+const errCode = require('./const');
+const NotFoundError = require('./error/NotFoundError');
+const cors = require('cors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
+
+// const options = {
+//   origin: [
+//     'http://localhost:3005',
+//     'https://frontend.mesto.students.nomorepartiesxyz.ru',
+//     'http://frontend.mesto.students.nomorepartiesxyz.ru',
+//     'https://sereja-artemov.github.io/',
+//   ],
+//   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+//   preflightContinue: false,
+//   optionsSuccessStatus: 204,
+//   allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
+//   credentials: true,
+// };
+//
+// app.use('*', cors(options));
 
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
@@ -44,5 +64,8 @@ app.use('*', (req, res) => {
 });
 
 app.use(errorLogger);
+
+app.use(errors());
+app.use(error);
 
 app.listen(PORT);

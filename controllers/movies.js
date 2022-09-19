@@ -26,7 +26,9 @@ const removeMovie = (req, res, next) => {
   moviesModel.findByIdAndRemove(req.movie._id)
     .then((movie) => {
       if (!movie) {
-        throw next(new NotFoundError('Фильм не найден'));
+        throw new NotFoundError('Фильм не найден');
+      } else if (movie.owner._id.toString() !== req.user._id.toString()) {
+        throw new ForbiddenError('Нельзя удалить чужой фильм');
       }
     })
     .catch(next);
