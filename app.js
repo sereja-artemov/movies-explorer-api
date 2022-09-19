@@ -37,7 +37,7 @@ mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
 }, (err) => {
   if (err) throw err;
   // eslint-disable-next-line no-console
-  console.log('Connected to MongoDB!!!');
+  console.log(`Connected to MongoDB!!! Порт ${PORT}`);
 });
 
 app.use(requestLogger);

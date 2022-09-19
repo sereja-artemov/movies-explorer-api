@@ -1,3 +1,5 @@
+const jsonwebtoken = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const userModel = require('../models/user');
 const ValidationError = require('../error/ValidationError');
 const ConflictError = require('../error/ConflictError');
@@ -48,7 +50,7 @@ const getUser = (req, res, next) => {
   userModel.findById(req.params.userId)
     .then((user) => {
       if (!user) {
-        throw next(new ValidationError('Пользователь с указанным id не найден'));
+        throw next(new NotFound('Пользователь с указанным id не найден'));
       }
       res.send(user);
     })
