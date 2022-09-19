@@ -1,12 +1,17 @@
 const moviesModel = require('../models/movie');
 const ValidationError = require('../error/ValidationError');
 const ConflictError = require('../error/ConflictError');
-const NotFound = require('../error/NotFoundError');
+const NotFoundError = require('../error/NotFoundError');
 const errCode = require("../const");
 
 const getUserMovies = (req, res, next) => {
   moviesModel.find({})
-    .then((movies) => res.send(movies))
+    .then((movies) => {
+      if (!movies) {
+        throw next(new NotFoundError('Файлы не найдены'))
+      }
+      res.send(movies);
+    })
     .catch(next);
 }
 
