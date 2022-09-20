@@ -15,21 +15,21 @@ const cors = require('cors');
 const { PORT = 3000 } = process.env;
 const app = express();
 
-// const options = {
-//   origin: [
-//     'http://localhost:3005',
-//     'https://frontend.mesto.students.nomorepartiesxyz.ru',
-//     'http://frontend.mesto.students.nomorepartiesxyz.ru',
-//     'https://sereja-artemov.github.io/',
-//   ],
-//   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-//   preflightContinue: false,
-//   optionsSuccessStatus: 204,
-//   allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
-//   credentials: true,
-// };
-//
-// app.use('*', cors(options));
+const options = {
+  origin: [
+    'http://localhost:3005',
+    // 'https://frontend.mesto.students.nomorepartiesxyz.ru',
+    // 'http://frontend.mesto.students.nomorepartiesxyz.ru',
+    'https://sereja-artemov.github.io/',
+  ],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
+  credentials: true,
+};
+
+app.use('*', cors(options));
 
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
