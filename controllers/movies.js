@@ -17,8 +17,8 @@ const getUserMovies = (req, res, next) => {
 }
 
 const createMovie = (req, res, next) => {
-  const { country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId } = req.body;
-  moviesModel.create({country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId})
+  const { country, director, duration, year, description, image, trailerLink, nameRU, nameEN, thumbnail, movieId } = req.body;
+  moviesModel.create({country, director, duration, year, description, image, trailerLink, nameRU, nameEN, thumbnail, movieId, owner: req.user._id})
     .then((movie) => res.send(movie))
     .catch(next);
 }
