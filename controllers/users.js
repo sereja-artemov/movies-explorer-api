@@ -47,7 +47,7 @@ const createUser = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  userModel.findById(req.params.userId)
+  userModel.findById(req.user._id)
     .then((user) => {
       if (!user) {
         throw next(new NotFound('Пользователь с указанным id не найден'));
