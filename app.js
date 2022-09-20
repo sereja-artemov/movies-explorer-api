@@ -12,6 +12,7 @@ const { signupValidation, signinValidation } = require('./middlewares/validation
 const errCode = require('./const');
 const NotFoundError = require('./error/NotFoundError');
 const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -30,8 +31,16 @@ const options = {
   credentials: true,
 };
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 300, // Limit each IP to 300 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+})
+
 app.use('*', cors(options));
 app.use(helmet());
+app.use(limiter);
 
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
