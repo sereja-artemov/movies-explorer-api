@@ -24,13 +24,15 @@ const createMovie = (req, res, next) => {
 }
 
 const removeMovie = (req, res, next) => {
-  moviesModel.findByIdAndRemove(req.movie._id)
+  moviesModel.findById(req.params._id)
     .then((movie) => {
       if (!movie) {
         throw new NotFoundError('Фильм не найден');
       } else if (movie.owner._id.toString() !== req.user._id.toString()) {
         throw new ForbiddenError('Нельзя удалить чужой фильм');
       }
+      movie.remove();
+      res.status(200).send({ data: movie });
     })
     .catch(next);
 }
