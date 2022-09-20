@@ -12,6 +12,7 @@ const { signupValidation, signinValidation } = require('./middlewares/validation
 const errCode = require('./const');
 const NotFoundError = require('./error/NotFoundError');
 const helmet = require('helmet');
+const { limiter } = require("./utils/limiter");
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -32,6 +33,7 @@ const options = {
 
 app.use('*', cors(options));
 app.use(helmet());
+app.use(limiter);
 
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
