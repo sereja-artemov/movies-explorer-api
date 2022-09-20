@@ -55,7 +55,7 @@ const getUser = (req, res, next) => {
       res.send(user);
     })
     .catch(next);
-}
+};
 
 const updateUserInfo = (req, res, next) => {
   const { email, name } = req.body;
