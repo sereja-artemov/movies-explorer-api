@@ -1,16 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+const cors = require('cors');
 const error = require('./middlewares/error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const usersRouter = require('./routes/users');
 const moviesRouter = require('./routes/movies');
 const { login, createUser } = require('./controllers/users');
-const auth = require('./middlewares/auth')
+const auth = require('./middlewares/auth');
 const { signupValidation, signinValidation } = require('./middlewares/validations');
 const errCode = require('./const');
 const NotFoundError = require('./error/NotFoundError');
-const cors = require('cors');
 
 const { PORT = 3000 } = process.env;
 const app = express();

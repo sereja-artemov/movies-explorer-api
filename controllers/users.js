@@ -4,7 +4,7 @@ const userModel = require('../models/user');
 const ValidationError = require('../error/ValidationError');
 const ConflictError = require('../error/ConflictError');
 const NotFound = require('../error/NotFoundError');
-const errCode = require("../const");
+const errCode = require('../const');
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
@@ -17,7 +17,8 @@ const login = (req, res, next) => {
       const jwtToken = jsonwebtoken.sign(
         { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
-        { expiresIn: '7d' });
+        { expiresIn: '7d' },
+      );
       res.send({ token: jwtToken });
     })
     .catch(next);
@@ -77,6 +78,8 @@ const updateUserInfo = (req, res, next) => {
       }
       return next(err);
     });
-}
+};
 
-module.exports = { getUser, updateUserInfo, login, createUser };
+module.exports = {
+  getUser, updateUserInfo, login, createUser,
+};
