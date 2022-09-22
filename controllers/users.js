@@ -41,8 +41,9 @@ const createUser = (req, res, next) => {
     .catch((err) => {
       if (err.code === 11000) {
         next(new ConflictError('Такой email уже существует'));
+      } else {
+        next(err);
       }
-      return next(err);
     });
 };
 

@@ -31,18 +31,17 @@ const options = {
 };
 
 app.use('*', cors(options));
+app.use(requestLogger);
 app.use(helmet());
 app.use(limiter);
 
-// подключаемся к серверу mongo
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
-  useNewUrlParser: true,
-}, (err) => {
-  if (err) throw err;
-  console.log(`Connected to MongoDB!!! Порт ${PORT}`);
-});
 
-app.use(requestLogger);
+mongoose.connect('mongodb://localhost:27017/moviesdb', {
+  useNewUrlParser: true,
+})
+  .then(() => console.log(`Connected to MongoDB!!! Порт ${PORT}`))
+  .catch(err => console.log('Упс, что-то сломалось!'));
+
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true,
@@ -55,17 +54,10 @@ app.use(auth);
 app.use(require('./routes/users'));
 app.use(require('./routes/movies'));
 
-app.use('*', (req, res) => {
-  try {
-    throw new NotFoundError('Страница не найдена');
-  } catch (err) {
-    if (err instanceof NotFoundError) {
-      res.status(errCode.NotFoundError).send({ message: err.message });
-    }
-  }
-});
-
 app.use(errorLogger);
+app.use('*', () => {
+  throw new NotFoundError('Страница не найдена');
+});
 
 app.use(errors());
 app.use(error);
