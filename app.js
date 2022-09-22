@@ -5,8 +5,6 @@ const cors = require('cors');
 const helmet = require('helmet');
 const error = require('./middlewares/error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const usersRouter = require('./routes/users');
-const moviesRouter = require('./routes/movies');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { signupValidation, signinValidation } = require('./middlewares/validations');
@@ -49,13 +47,13 @@ app.use(express.urlencoded({
   extended: true,
 }));
 
-app.post('/signup', signupValidation, createUser);
-app.post('/signin', signinValidation, login);
+app.use(require('./routes/auth'));
 
 app.use(auth);
 
-app.use('/users', usersRouter);
-app.use('/movies', moviesRouter);
+app.use(require('./routes/users'));
+app.use(require('./routes/movies'));
+
 app.use('*', (req, res) => {
   try {
     throw new NotFoundError('Страница не найдена');
