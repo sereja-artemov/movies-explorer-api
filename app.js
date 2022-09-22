@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const cors = require('cors');
+const helmet = require('helmet');
 const error = require('./middlewares/error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const usersRouter = require('./routes/users');
@@ -11,8 +12,7 @@ const auth = require('./middlewares/auth');
 const { signupValidation, signinValidation } = require('./middlewares/validations');
 const errCode = require('./const');
 const NotFoundError = require('./error/NotFoundError');
-const helmet = require('helmet');
-const { limiter } = require("./utils/limiter");
+const { limiter } = require('./utils/limiter');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -40,7 +40,6 @@ mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
   useNewUrlParser: true,
 }, (err) => {
   if (err) throw err;
-  // eslint-disable-next-line no-console
   console.log(`Connected to MongoDB!!! Порт ${PORT}`);
 });
 

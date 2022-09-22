@@ -45,12 +45,12 @@ const createMovieValidation = celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required(),
-    trailerLink: Joi.string().required(),
+    image: Joi.string().custom(checkValidUrl).required(),
+    trailerLink: Joi.string().custom(checkValidUrl).required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
-    thumbnail: Joi.string().required(),
-    movieId: Joi.string().required(),
+    thumbnail: Joi.string().custom(checkValidUrl).required(),
+    movieId: Joi.number().required(),
   }),
 });
 

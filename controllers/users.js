@@ -10,7 +10,6 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
 
   return userModel.findUserByCredentials(email, password)
-    // eslint-disable-next-line consistent-return
     .then((user) => {
       // создаем токен
       const { NODE_ENV, JWT_SECRET } = process.env;
