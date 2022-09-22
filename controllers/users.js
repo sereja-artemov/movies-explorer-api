@@ -74,6 +74,8 @@ const updateUserInfo = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new ValidationError('Переданы некорректные данные'));
+      } else {
+        next(new ConflictError('Такие данные уже существуют'));
       }
       return next(err);
     });

@@ -50,8 +50,16 @@ const createMovieValidation = celebrate({
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
     thumbnail: Joi.string().custom(checkValidUrl).required(),
-    movieId: Joi.number().required(),
   }),
+  params: Joi.object().keys({
+    movieId: Joi.number().required(),
+  })
+});
+
+const removeMovieValidation = celebrate({
+  params: Joi.object().keys({
+    _id: Joi.number().required(),
+  })
 });
 
 module.exports = {
@@ -60,4 +68,5 @@ module.exports = {
   getUserValidation,
   updateUserValidation,
   createMovieValidation,
+  removeMovieValidation,
 };
