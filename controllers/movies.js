@@ -52,7 +52,7 @@ const removeMovie = (req, res, next) => {
     .then((movie) => {
       if (movie.owner._id.toString() !== req.user._id.toString()) {
         return movie.remove()
-        .then(() => res.status(200).send({ message: 'Фильм удален', data: movie }));
+          .then(() => res.status(200).send({ message: 'Фильм удален', data: movie }));
       }
       throw new ForbiddenError('Нельзя удалить чужой фильм');
     })
