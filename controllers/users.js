@@ -61,10 +61,6 @@ const getUser = (req, res, next) => {
 const updateUserInfo = (req, res, next) => {
   const { email, name } = req.body;
 
-  if (!email || !name) {
-    res.status(errCode.ValidationError).send({ message: 'Переданы некорректные данные при обновлении профиля.' });
-  }
-
   userModel.findByIdAndUpdate(req.user._id, { email, name }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {

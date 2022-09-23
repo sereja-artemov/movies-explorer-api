@@ -6,10 +6,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const error = require('./middlewares/error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
-const { signupValidation, signinValidation } = require('./middlewares/validations');
-const errCode = require('./const');
 const NotFoundError = require('./error/NotFoundError');
 const { limiter } = require('./utils/limiter');
 
@@ -35,12 +32,15 @@ app.use(requestLogger);
 app.use(helmet());
 app.use(limiter);
 
-
 mongoose.connect('mongodb://localhost:27017/moviesdb', {
   useNewUrlParser: true,
 })
-  .then(() => console.log(`Connected to MongoDB!!! Порт ${PORT}`))
-  .catch(err => console.log('Упс, что-то сломалось!'));
+  .then(() => {
+    console.log(`Connected to MongoDB!!! Порт ${PORT}`);
+  })
+  .catch(() => {
+    console.log('Упс, что-то сломалось!');
+  });
 
 app.use(express.json());
 app.use(express.urlencoded({
