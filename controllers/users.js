@@ -4,7 +4,7 @@ const userModel = require('../models/user');
 const ValidationError = require('../error/ValidationError');
 const ConflictError = require('../error/ConflictError');
 const NotFound = require('../error/NotFoundError');
-const errCode = require('../const');
+const { DEV_SECRET } = require("../utils/const");
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
@@ -15,7 +15,7 @@ const login = (req, res, next) => {
       const { NODE_ENV, JWT_SECRET } = process.env;
       const jwtToken = jsonwebtoken.sign(
         { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        NODE_ENV === 'production' ? JWT_SECRET : DEV_SECRET,
         { expiresIn: '7d' },
       );
       res.send({ token: jwtToken });
@@ -71,7 +71,7 @@ const updateUserInfo = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new ValidationError('Переданы некорректные данные'));
-      } else {
+      } else if (err.code === 11000) {
         next(new ConflictError('Такие данные уже существуют'));
       }
       return next(err);

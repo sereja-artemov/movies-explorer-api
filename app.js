@@ -9,8 +9,10 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const auth = require('./middlewares/auth');
 const NotFoundError = require('./error/NotFoundError');
 const { limiter } = require('./utils/limiter');
+const { MONGODB_PATH } = require("./utils/const");
+const router = require('./routs/index');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, NODE_ENV, DB_CONN } = process.env;
 const app = express();
 
 const options = {
@@ -32,7 +34,7 @@ app.use(requestLogger);
 app.use(helmet());
 app.use(limiter);
 
-mongoose.connect('mongodb://localhost:27017/moviesdb', {
+mongoose.connect(NODE_ENV === 'production' ? DB_CONN : MONGODB_PATH, {
   useNewUrlParser: true,
 })
   .then(() => {
@@ -47,17 +49,12 @@ app.use(express.urlencoded({
   extended: true,
 }));
 
-app.use(require('./routes/auth'));
+app.use('/', router);
 
-app.use(auth);
-
-app.use(require('./routes/users'));
-app.use(require('./routes/movies'));
-
-app.use(errorLogger);
 app.use('*', () => {
   throw new NotFoundError('Страница не найдена');
 });
+app.use(errorLogger);
 
 app.use(errors());
 app.use(error);
