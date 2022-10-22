@@ -67,5 +67,5 @@ module.exports = {
   getUserValidation,
   updateUserValidation,
   createMovieValidation,
-  removeMovieValidation,
+  removeMovieValidation
 };
