@@ -3,7 +3,7 @@ const NotFoundError = require('../error/NotFoundError');
 const ForbiddenError = require('../error/ForbiddenError');
 
 const getUserMovies = (req, res, next) => {
-  moviesModel.find({})
+  moviesModel.find({ owner: req.user._id })
     .then((movies) => {
       if (!movies) {
         throw next(new NotFoundError('Файлы не найдены'));
