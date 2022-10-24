@@ -46,10 +46,10 @@ const createMovie = (req, res, next) => {
 };
 
 const removeMovie = (req, res, next) => {
-  moviesModel.findById(req.params.movieId)
+  moviesModel.findById(req.params._id)
     .orFail(new NotFoundError('Фильм не найден'))
     .then((movie) => {
-      if (movie.owner._id.toString() === req.user._id) {
+      if (movie.owner._id.toString() === req.user._id.toString()) {
         return movie.remove()
           .then(() => res.status(200).send({ message: 'Фильм удален', data: movie }));
       }
