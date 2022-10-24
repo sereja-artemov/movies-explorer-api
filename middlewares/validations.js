@@ -40,8 +40,8 @@ const updateUserValidation = celebrate({
 
 const createMovieValidation = celebrate({
   body: Joi.object().keys({
-    country: Joi.string().required().max(50),
-    director: Joi.string().required().max(50),
+    country: Joi.string().required().max(150),
+    director: Joi.string().required().max(150),
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
@@ -56,8 +56,7 @@ const createMovieValidation = celebrate({
 
 const removeMovieValidation = celebrate({
   params: Joi.object().keys({
-    _id: Joi.string().alphanum().hex().length(24)
-      .required(),
+    movieId: Joi.string().alphanum().hex().length(24),
   }),
 });
 
@@ -67,5 +66,5 @@ module.exports = {
   getUserValidation,
   updateUserValidation,
   createMovieValidation,
-  removeMovieValidation,
+  removeMovieValidation
 };
